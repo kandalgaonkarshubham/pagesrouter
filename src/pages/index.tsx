@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -9,11 +9,10 @@ export default function Home() {
   const fetchALlFirms = useFirmStore((state) => state.fetchAllFirms);
   const cleanFirms = useFirmStore((state) => state.cleanFirms);
 
-  const router = useRouter()
+  const [navigationButton, setNavigationButton] = useState(false);
+  const toggleButton = () => setNavigationButton(!navigationButton);
 
-  // useEffect(() => {
-  //   console.log(firms)
-  // }, [firms])
+  const router = useRouter()
 
   return (
     <div className="w-full flex items-start justify-between p-8">
@@ -26,11 +25,16 @@ export default function Home() {
             <span key={firm.id}>{firm.id} {firm.name}</span>
           ))
         }
-        <Link href={"/about"} className="bg-neutral-700 rounded p-2 w-fit">Go to About</Link>
-        {/* <button onClick={() => router.push("/about")} className="bg-neutral-700 rounded p-2 w-fit">Go to About</button> */}
+
+        {navigationButton ?
+          <Link href={"/about"} className="bg-neutral-700 rounded p-2 w-fit">Go to About</Link>
+          :
+          <button onClick={() => router.push("/about")} className="bg-neutral-700 rounded p-2 w-fit">Go to About</button>
+        }
       </div>
 
       <div className="flex flex-col gap-4">
+        <button className="bg-emerald-800 rounded p-2" onClick={toggleButton}>{navigationButton ? "Using LINK" : "Using Router"}</button>
         <button className="bg-sky-800 rounded p-2" onClick={fetchALlFirms}>Fetch Firms</button>
         <button className="bg-rose-800 rounded p-2" onClick={cleanFirms}>Clean Firms</button>
       </div>
