@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 
 import { useFirmStore } from "@/store/firm";
 
+import { useNavigation } from "@/context/NavigationContext";
+
 export default function Home() {
   const firms = useFirmStore((state) => state.firms);
   const fetchALlFirms = useFirmStore((state) => state.fetchAllFirms);
@@ -14,12 +16,15 @@ export default function Home() {
 
   const router = useRouter()
 
+  const navigationType = useNavigation();
+
   return (
     <div className="w-full flex items-start justify-between p-8">
       <div
         className="flex flex-col gap-10"
       >
         <h1 className="text-emerald-600 font-bold text-3xl">Home Page</h1>
+        <h2 className="text-rose-600 font-bold text-xl">{navigationType === 'refresh' ? 'Page Refreshed' : 'Route Navigation'}</h2>
         {
           firms.map((firm) => (
             <span key={firm.id}>{firm.id} {firm.name}</span>
